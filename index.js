@@ -26,12 +26,21 @@ document.addEventListener('DOMContentLoaded', () =>{
         <p> Capacity: ${film.capacity}</p>
         <p>Tickets Sold: ${film.tickets_sold}</p>
         <p>Available Tickets: ${availableTicket}</p>
-        <button>Buy Ticket</button>
+        <button class="buy-ticket">Buy Ticket</button>
         `
         document.getElementById('film-content').appendChild(pack)
+        document.querySelectorAll('.buy-ticket').forEach(button => {
+            button.addEventListener('click', () => buyTicket(film))
+        })
     }
 
+    function buyTicket(film){
+        availableTicket--
+        film.tickets_sold++
 
+        const availableTicketElement = document.querySelector('.pack-film .available-tickets');
+        availableTicketElement.textContent = `Available Tickets: ${availableTicket}`;
+    }
 })
 
 console.log("welcome")
