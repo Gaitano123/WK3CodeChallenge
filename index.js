@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () =>{
+     
+  
+
 
     fetch('http://localhost:3000/films')
     .then(response => response.json())
@@ -10,10 +13,13 @@ document.addEventListener('DOMContentLoaded', () =>{
         <p>${film.title}</p>
         `
         li.addEventListener('click',() => movieDetails(film))
+
         document.getElementById('film-names').appendChild(li)
     }
 
     function movieDetails(film){
+      const filmcontentcontainer = document.getElementById('film-content')
+      filmcontentcontainer.innerHTML = ''
         const pack = document.createElement('div')
         pack.className = 'pack-film'
         const availableTicket = film.capacity - film.tickets_sold
@@ -24,23 +30,24 @@ document.addEventListener('DOMContentLoaded', () =>{
         <p>Runtime: ${film.runtime}</p>
         <p>Showtime: ${film.showtime}</p>
         <p> Capacity: ${film.capacity}</p>
-        <p>Tickets Sold: ${film.tickets_sold}</p>
-        <p>Available Tickets: ${availableTicket}</p>
+        <p id="ticket-sold">Tickets Sold: ${film.tickets_sold}</p>
+        <p id="available-tickets">Available Tickets: ${availableTicket}</p>
         <button class="buy-ticket">Buy Ticket</button>
         `
-        document.getElementById('film-content').appendChild(pack)
+        filmcontentcontainer.appendChild(pack)
         document.querySelectorAll('.buy-ticket').forEach(button => {
-            button.addEventListener('click', () => buyTicket(film))
+            button.addEventListener('click', () => buyTicket(film , availableTicket))
         })
     }
 
-    function buyTicket(film){
-        availableTicket--
-        film.tickets_sold++
+    function buyTicket(film , availableTicket){
+         const soldtickets = document.getElementById('ticket-sold')
+         soldtickets.innerText = "Tickets Sold: " + (film.tickets_sold)++
 
-        const availableTicketElement = document.querySelector('.pack-film .available-tickets');
-        availableTicketElement.textContent = `Available Tickets: ${availableTicket}`;
-    }
+         const availabletickets = document.getElementById('available-tickets')
+         availabletickets.innerText = "Available Tickets: " + (((film.capacity)--)- (film.tickets_sold))
+        
+     }
 })
 
 console.log("welcome")
