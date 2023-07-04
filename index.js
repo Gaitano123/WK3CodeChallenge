@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () =>{
-     
-  
-
 
     fetch('http://localhost:3000/films')
     .then(response => response.json())
-    .then(films => films.forEach(film => displayMovie(film)));
+    .then(films => films.forEach((film, index) => {
+        displayMovie(film)
+        if(index === 0){
+            movieDetails(film)
+        }
+    }));
 
     function displayMovie(film) {
         const li = document.createElement('li')
@@ -41,13 +43,18 @@ document.addEventListener('DOMContentLoaded', () =>{
     }
 
     function buyTicket(film , availableTicket){
-         const soldtickets = document.getElementById('ticket-sold')
-         soldtickets.innerText = "Tickets Sold: " + (film.tickets_sold)++
+        if(film.tickets_sold < film.capacity){
+            const soldtickets = document.getElementById('ticket-sold')
+            soldtickets.innerText = "Tickets Sold: " + ((++film.tickets_sold))
 
-         const availabletickets = document.getElementById('available-tickets')
-         availabletickets.innerText = "Available Tickets: " + (((film.capacity)--)- (film.tickets_sold))
+            const availabletickets = document.getElementById('available-tickets')
+            availabletickets.innerText = "Available Tickets: " + (((film.capacity))- (film.tickets_sold))
         
-     }
+            if(film.tickets_sold === film.capacity){
+            document.querySelector('.buy-ticket').innerText = 'SOLD OUT'
+            }
+        }
+    }
+    
 })
 
-console.log("welcome")
